@@ -1,3 +1,5 @@
+import os
+path=os.getcwd()+'/'
 class Ship:
     def __init__(self, x, y, w, h):
         self.x=x
@@ -39,7 +41,13 @@ class Obstacle:
         self.h=h
     def display(self):
         rect(self.x,self.y,self.w,self.h)
-                
+
+class Game:
+    def __init__(self):
+        self.img=loadImage(path+'background.png')
+    def display(self):
+        image(self.img,0,0)
+g=Game()
 s=playerShip(150,700,20,20)
 o=Obstacle(100,100,25,85)
 
@@ -48,6 +56,7 @@ def setup():
     
 def draw():
     background(255)
+    g.display()
     s.display()
     o.display()
     s.update()
