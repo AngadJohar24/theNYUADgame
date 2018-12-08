@@ -6,18 +6,13 @@ class Ship:
         self.h=h
         self.vx=0
     def display(self):
-        ellipse(x,y,w,h)
+        ellipse(self.x,self.y,self.w,self.h)
     def update(self):
         self.x+=self.vx
-class myShip(Ship):
-    def __init__(self, x, y, w, h):
-        Ship.__init__(self, x, y, w, h)
-        self.keyStuff={LEFT:False, RIGHT:False}
-    def move(self):
-        if 
-def keyPressed():
-    if keyCode == LEFT:
-        [LEFT] = True
-    elif keyCode == RIGHT:
-        [RIGHT] = True
-        
+s=Ship(150,500,20,20)
+def setup():
+    background(255)
+    size(300,600)
+def draw():
+    s.display()
+    
