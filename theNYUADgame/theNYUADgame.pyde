@@ -12,9 +12,9 @@ class Ship:
         ellipse(self.x,self.y,self.w,self.h)
     def update(self):
         if self.keyCommand[LEFT]:
-            self.vx=-2
+            self.vx=-3
         elif self.keyCommand[RIGHT]:
-            self.vx=2
+            self.vx=3
         else:
             self.vx=0
         self.x+=self.vx
@@ -26,14 +26,22 @@ class playerShip(Ship):
         self.keyCommand={LEFT:False, RIGHT:False}
     def update(self):
         if self.keyCommand[LEFT]:
-            self.vx=-2
+            if self.x+self.w>=0:
+                self.vx=-3
+            else:
+                self.vx=0
+                print(2)
         elif self.keyCommand[RIGHT]:
-            self.vx=2
+            if self.x+(self.w/2)<=400:
+                self.vx=3
+            else:
+                self.vx=0
         else:
             self.vx=0
         self.x+=self.vx
         g.g+=g.vg
         g.gobj+=g.vg
+        
     def distance(self, target):
         return ((self.x - target.x)**2 + (self.y - target.y)**2)**0.5
         
@@ -47,7 +55,7 @@ class Obstacle:
         rect(self.x,self.y,self.w,self.h)
     def update(self):
         self.y-=g.vg
-        print(1)
+    
     
 class Game:
     def __init__(self,w,h):
@@ -60,7 +68,7 @@ class Game:
         self.img=loadImage(path+'background.png')
         
     def display(self):
-        if self.g<=-728:
+        if self.g==-728:
             self.g=0
         image(self.img, 0, 0+self.g)
         image(self.img, 0, 728+self.g)
