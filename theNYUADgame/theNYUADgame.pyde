@@ -13,8 +13,21 @@ class Ship:
     def display(self):
         image(s.img2, self.x-self.w/2, self.y-self.w/2, 200, 215)
         ellipse(self.x,self.y,self.w,self.h)
+<<<<<<< HEAD
 
                 
+=======
+    def update(self):
+        if self.keyCommand[LEFT]:
+            self.vx=-3
+        elif self.keyCommand[RIGHT]:
+            self.vx=3
+        else:
+            self.vx=0
+        self.x+=self.vx
+        
+        
+>>>>>>> 4e1fbdeeea294b7e5af3f3d0fb625ed9e2e03d2a
 class playerShip(Ship):
     def __init__(self, x, y, w, h):
         Ship.__init__(self, x, y, w, h)
@@ -22,10 +35,24 @@ class playerShip(Ship):
         self.keyCommand={LEFT:False, RIGHT:False}
         
     def update(self):
+<<<<<<< HEAD
         if self.keyCommand[LEFT] and self.x+self.w/2>self.w:
             self.vx=-3
         elif self.keyCommand[RIGHT] and self.x+self.w/2<400:
             self.vx=3
+=======
+        if self.keyCommand[LEFT]:
+            if self.x+self.w>=0:
+                self.vx=-3
+            else:
+                self.vx=0
+                print(2)
+        elif self.keyCommand[RIGHT]:
+            if self.x+(self.w/2)<=400:
+                self.vx=3
+            else:
+                self.vx=0
+>>>>>>> 4e1fbdeeea294b7e5af3f3d0fb625ed9e2e03d2a
         else:
             self.vx=0
         self.x+=self.vx
@@ -45,6 +72,7 @@ class Obstacle:
         
     def display(self):
         rect(self.x,self.y,self.w,self.h)
+<<<<<<< HEAD
 
 class Coin(Obstacle):
     def __init__(self,x,y,w,h):
@@ -53,6 +81,12 @@ class Coin(Obstacle):
     def display(self):
         ellipse(self.x,self.y,self.w,self.h)
                         
+=======
+    def update(self):
+        self.y-=g.vg
+    
+    
+>>>>>>> 4e1fbdeeea294b7e5af3f3d0fb625ed9e2e03d2a
 class Game:
     def __init__(self,w,h):
         self.x=0
@@ -64,7 +98,7 @@ class Game:
         self.img=loadImage(path+'background.png')
         
     def display(self):
-        if self.g<=-728:
+        if self.g==-728:
             self.g=0
         image(self.img, 0, -self.g)
         image(self.img, 0, 0, self.w, -self.g, 0, self.h+self.g, self.w, self.h)
