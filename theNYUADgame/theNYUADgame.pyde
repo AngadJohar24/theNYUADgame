@@ -1,5 +1,5 @@
-import os
-path=os.getcwd()+'images/'
+import os, random
+path=os.getcwd()+'/images/'
 
 class Ship:
     
@@ -13,7 +13,7 @@ class Ship:
         
     def display(self):
         ellipse(self.x,self.y,self.w,self.h)
-        image(s.img2, self.x-self.w/2, self.y-self.w/2, 200, 215)
+        image(g.s.img2, self.x-self.w/2, self.y-self.w/2, 90, 96)
 
     def update(self):
         if self.keyCommand[LEFT]:
@@ -28,7 +28,7 @@ class playerShip(Ship):
     
     def __init__(self, x, y, w, h):
         Ship.__init__(self, x, y, w, h)
-        self.img2=loadImage(path+'cstresh2.png')
+        self.img2=loadImage(path+'cstresh3.png')
         self.keyCommand={LEFT:False, RIGHT:False}
         
     def update(self):
@@ -39,7 +39,7 @@ class playerShip(Ship):
                 self.vx=0
             
         elif self.keyCommand[RIGHT]:
-            if self.x+(self.w/2)<=625:
+            if self.x+(self.w/2)<=g.w:
                 self.vx=5
             else:
                 self.vx=0
@@ -56,7 +56,7 @@ class playerShip(Ship):
     def display(self):
         self.update()
         ellipse(self.x,self.y,self.w,self.h)
-        image(self.img2, self.x-self.w/2, self.y-self.w/2, 200, 215)
+        image(self.img2, self.x-self.w/2, self.y-self.w/2, 90, 96)
                     
 class Obstacle:
     
@@ -71,7 +71,8 @@ class Obstacle:
         self.y-=g.vg
         if (g.s.x>=self.x-g.s.w/2 and g.s.x<=self.x+self.w+g.s.w/2) and (g.s.y-g.s.w/2<=self.y+self.h and g.s.y+g.s.w/2>=self.y):
             g.vg=0
-            g.__init__(625,728)
+            g.__init__(580, 800)
+
                 
     def display(self):
         self.update()
@@ -105,25 +106,33 @@ class Game:
         self.gobj=0
         self.vg=-6
         self.h=h
-        self.img=loadImage(path+'background.png')
-        self.s=playerShip(self.w/2-100, self.h-100, 200, 200)
-        self.o=Obstacle(100,-500,83,500)
+        self.img=loadImage(path+'math.png')
+        self.s=playerShip(self.w/2-100, self.h-100, 90, 90)
         self.c=Coin(200, 100, 50, 50)
-        
+        self.oList=[]
+        x=10
+        y=100
+        for o in range(1000):
+            for o1 in range(2):
+                self.oList.append(Obstacle(x, y, 83, 500))
+                x+=180+random.randint(10, 200)
+            y-=1000
+            x=10     
+                      
     def display(self):
         if self.g<=-self.h:
             self.g=0
-        image(self.img, 0, -self.g)
-        image(self.img, 0, 0, self.w, -self.g, 0, self.h+self.g, self.w, self.h)
+        #image(self.img, 0, -self.g)
+        #image(self.img, 0, 0, self.w, -self.g, 0, self.h+self.g, self.w, self.h)
         self.s.display()
-        self.o.display()
         self.c.display()
-        
-             
-g=Game(625,728)
+        for o in range(200):
+            self.oList[o].display()
+                        
+g=Game(580,800)
 
 def setup():
-    size(625,728)
+    size(580,800)
     
 def draw():
     noFill()
