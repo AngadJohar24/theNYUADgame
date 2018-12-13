@@ -1,8 +1,8 @@
-<<<<<<< HEAD
+
 import os
-=======
+
 import os, random
->>>>>>> b43714b9cb8e285987d99e8d52ec3515a5622b87
+
 path=os.getcwd()+'/images/'
 
 class Ship:
