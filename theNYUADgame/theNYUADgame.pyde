@@ -1,5 +1,5 @@
 import os
-path=os.getcwd()+'images/'
+path=os.getcwd()+'/images/'
 
 class Ship:
     
