@@ -1,5 +1,4 @@
-
-import os, random, time
+import os, random
 path=os.getcwd()+'/images/'
 
 class Ship:
@@ -12,7 +11,7 @@ class Ship:
         self.vx=0
         self.keyCommand={LEFT:False, RIGHT:False}
         self.countStar=0
-        self.countStarCopy=0
+
         
     def display(self):
         ellipse(self.x,self.y,self.w,self.h)
@@ -27,13 +26,14 @@ class Ship:
             self.vx=0
         self.x+=self.vx
         
+        
 class playerShip(Ship):
     
     def __init__(self, x, y, w, h):
         Ship.__init__(self, x, y, w, h)
         self.img2=loadImage(path+'cstresh3.png')
         self.keyCommand={LEFT:False, RIGHT:False}
-        
+
     def update(self):
         if self.keyCommand[LEFT]:
             if self.x-(self.w/2)>=0:
@@ -52,16 +52,16 @@ class playerShip(Ship):
         self.x+=self.vx
         g.g+=g.vg
         g.gobj+=g.vg
-        
         for c in g.cList:
             if self.distance(c)<=self.w/2+c.w/2:
                 g.cList.remove(c)
                 self.countStar+=1
                 if self.countStar%50==0:
+                    frameRate(0.5)
+                    image(g.img7, 0, 0, g.w, g.h)
                     g.__init__(612, 800, 2)
                     g.vg-=2
-                
-                        
+                                        
     def distance(self, target):
         return ((self.x - target.x)**2 + (self.y - target.y)**2)**0.5
     
@@ -69,7 +69,8 @@ class playerShip(Ship):
         self.update()
         ellipse(self.x,self.y,self.w,self.h)
         image(self.img2, self.x-self.w/2, self.y-self.w/2, 90, 96)
-                    
+
+                                        
 class Obstacle:
     
     def __init__(self,x,y,w,h,o):
@@ -98,7 +99,6 @@ class Coin(Obstacle):
     def __init__(self,x,y,w,h,o):
         Obstacle.__init__(self,x,y,w,h,o)
         self.img3=loadImage(path+'mealswipe1.png')
-        self.countStar=0
         
     def update(self):
         self.y-=g.vg  
@@ -122,6 +122,7 @@ class Game:
         self.img=loadImage(path+'background4.png')
         self.img5=loadImage(path+'start.png')
         self.img6=loadImage(path+'lose.png')
+        self.img7=loadImage(path+'level.png')
         self.s=playerShip(self.w/2-100, self.h-100, 90, 90)
         self.cList=[]
         self.oList=[]
@@ -147,10 +148,9 @@ class Game:
                 y-=k
             y-=600
             x=95 
-             
-   
-                         
+                                     
     def display(self):
+        frameRate(60)
         if self.play==0:
             image(self.img5, 0, 0, self.w, self.h)
         elif self.play==1:
@@ -165,7 +165,11 @@ class Game:
                 self.cList[c].display()
             for o in range(150):
                 self.oList[o].display()
-            textSize(30)
+            textSize(18)
+            fill(210)
+            rect(50, 33, 125, 20)
+            fill(0,0,150)
+            text('MealSwipes:'+str(self.s.countStar), 50, 50)
                   
 g=Game(612,800,0)
 
