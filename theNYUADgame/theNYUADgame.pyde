@@ -1,5 +1,4 @@
 
-
 import os, random
 
 path=os.getcwd()+'/images/'
@@ -31,7 +30,7 @@ class playerShip(Ship):
     
     def __init__(self, x, y, w, h):
         Ship.__init__(self, x, y, w, h)
-        self.img2=loadImage(path+'cstresh5.png')
+        self.img2=loadImage(path+'cstresh3.png')
         self.keyCommand={LEFT:False, RIGHT:False}
         
     def update(self):
@@ -53,22 +52,27 @@ class playerShip(Ship):
         g.g+=g.vg
         g.gobj+=g.vg
         
+        for c in g.cList:
+            if self.distance(c)<=self.w/2+c.w/2:
+                g.cList.remove(c)
+                        
     def distance(self, target):
         return ((self.x - target.x)**2 + (self.y - target.y)**2)**0.5
     
     def display(self):
         self.update()
         ellipse(self.x,self.y,self.w,self.h)
-        image(self.img2, self.x-self.w/2, self.y-self.w/2, 113, 120)
+        image(self.img2, self.x-self.w/2, self.y-self.w/2, 90, 96)
                     
 class Obstacle:
     
-    def __init__(self,x,y,w,h):
+    def __init__(self,x,y,w,h,o):
         self.x=x
         self.y=y
         self.w=w
         self.h=h
-        self.img4=loadImage(path+'mfa2.png')
+        self.o=o
+        self.ob=loadImage(path+'ob'+str(self.o)+'.png')
     
     def update(self):
         self.y-=g.vg
@@ -80,25 +84,24 @@ class Obstacle:
     def display(self):
         self.update()
         rect(self.x,self.y,self.w,self.h)
-        image(self.img4, self.x, self.y)
+        image(self.ob, self.x, self.y)
         
 
 class Coin(Obstacle):
     
-    def __init__(self,x,y,w,h):
-        Obstacle.__init__(self,x,y,w,h)
+    def __init__(self,x,y,w,h,o):
+        Obstacle.__init__(self,x,y,w,h,o)
         self.img3=loadImage(path+'mealswipe.png')
+        self.countStar=0
         
     def update(self):
         self.y-=g.vg  
           
     def display(self):
         self.update()
-        if g.s.distance(self)>self.w/2+g.s.w/2 and self.y<g.s.y:
-            ellipse(self.x,self.y,self.w,self.h)
-            image(self.img3, self.x-self.w/2, self.y-self.w/2)
-                        
-    
+        ellipse(self.x,self.y,self.w,self.h)
+        image(self.img3, self.x-self.w/2, self.y-self.w/2)
+            
 
 class Game:
     
@@ -110,16 +113,33 @@ class Game:
         self.vg=-6
         self.h=h
         self.img=loadImage(path+'background4.png')
-        self.s=playerShip(self.w/2-100, self.h-100, 120, 120)
-        self.c=Coin(200, 100, 50, 50)
+        self.s=playerShip(self.w/2-100, self.h-100, 90, 90)
+        self.cList=[]
+        self.c=Coin(200, 100, 50, 50, 0)
         self.oList=[]
         x=10
         y=100
         for o in range(50):
-            for o1 in range(2):
-                self.oList.append(Obstacle(x, y, 83, 500))
-                x+=180+random.randint(10, 200)
-            y-=1000
+            for o1 in range(3):
+                k=random.randint(-100,150)
+                l=180+random.randint(5,50)
+                self.oList.append(Obstacle(x, y, 40, 350, random.randint(0,2)))
+                if o1==1:
+                    yCoin=y+350
+                    xCoin=l/2
+                    side=random.randint(0,1)
+                    if side==0:
+                        for c in range(5):
+                            self.cList.append(Coin(x-xCoin, yCoin, 50, 50, 0))
+                            yCoin-=self.w/2
+                    else:
+                        for c in range(5):
+                            self.cList.append(Coin(x+xCoin, yCoin, 50, 50, 0))
+                            yCoin-=self.w/2+10
+                                                           
+                y-=k
+                x+=l
+            y-=700
             x=10     
                       
     def display(self):
@@ -129,7 +149,9 @@ class Game:
         image(self.img, 0, 0, self.w, -self.g, 0, self.h+self.g, self.w, self.h)
         self.s.display()
         self.c.display()
-        for o in range(100):
+        for c in range(len(self.cList)):
+            self.cList[c].display()
+        for o in range(150):
             self.oList[o].display()
                         
 g=Game(612,800)
@@ -156,5 +178,7 @@ def keyReleased():
         g.s.keyCommand[RIGHT]=False
         
      
+        
+        
         
     
